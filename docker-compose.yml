@@ -1,0 +1,62 @@
+version: '2'
+services:
+
+    secure-messaging-ui:
+      restart: always
+      build: ${SECURE_MESSAGING_HOME}/secure-messaging-ui
+      volumes:
+        - ${SECURE_MESSAGING_HOME}/secure-messaging-ui/app:/code/app
+      networks:
+        - secure-messaging-env
+      ports:
+           - "5000:5000"
+  # db:
+    # image: postgres:9.5
+    # environment:
+    #   POSTGRES_PASSWORD: digitaleq
+    #   POSTGRES_USER: digitaleq
+    #   POSTGRES_DB: runner
+    # ports:
+    #   - "5433:5432"
+    # networks:
+    #   - secure-messaging-env
+  # eq-survey-runner:
+  #   build: ../sdx/eq-survey-runner
+  #   environment:
+  #     EQ_CLOUDWATCH_LOGGING: "False"
+  #     EQ_DEV_MODE: "True"
+  #     EQ_RABBITMQ_ENABLED: "True"
+  #     EQ_SCHEMA_BUCKET: ""
+  #     EQ_SERVER_SIDE_STORAGE_DATABASE_URL: postgres://digitaleq:digitaleq@db:5432/runner
+  #     EQ_RABBITMQ_URL: amqp://rabbit:rabbit@rabbit:5672/%2F
+  #   restart: always
+  #   volumes:
+  #     - ../sdx/eq-survey-runner/app:/code/app
+  #   depends_on:
+  #     - db
+  #     - rabbit
+  #   networks:
+  #     - sdx-env
+  #   ports:
+  #     - "5000:5000"
+  # sdx-collect:
+  #   restart: always
+  #   build: ${SDX_HOME}/sdx-collect
+  #   depends_on:
+  #     - rabbit
+  #   env_file:
+  #     - env/rabbit.env
+  #     - env/ftp.env
+  #     - env/common.env
+  #     - env/private.env
+  #   networks:
+  #     - sdx-env
+  #   # logging:
+  #   #   driver: syslog
+  #   #   options:
+  #   #     syslog-address: "udp://127.0.0.1:5514"
+  #   #     tag: "sdx-decrypt"
+
+networks:
+  secure-messaging-env:
+    driver: bridge
